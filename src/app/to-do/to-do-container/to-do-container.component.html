@@ -1,1 +1,6 @@
-<app-to-do-presentation></app-to-do-presentation>
+<app-to-do-presentation
+    (emitTodoData)="emitTodoData($event)"
+    (emitUpdateTodo)="emitUpdateTodo($event)"
+    (emitClearComplete)="emitClearComplete($event)"
+    [todo]="getTodos | async"
+></app-to-do-presentation>

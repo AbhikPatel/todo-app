@@ -1,0 +1,13 @@
+.image-container{
+    flex: 0 0 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.image-dark{
+    background-image: url('../../images/bg-desktop-dark.jpg');
+}
+
+.image-light{
+    background-image: url('../../images/bg-desktop-light.jpg');
+}

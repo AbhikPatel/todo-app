@@ -1,2 +1,18 @@
 // Typographical styles goes here
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+.text-nav{
+    color: #7e7e7e;
+}
+
+.text-dtheme{
+    &:hover{
+        color: $white;
+    }
+}
+
+.text-wtheme{
+    &:hover{
+        color: black;
+    }
+}
