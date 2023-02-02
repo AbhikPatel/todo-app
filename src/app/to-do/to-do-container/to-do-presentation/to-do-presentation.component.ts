@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { todoModel } from '../../todo.model';
@@ -154,7 +155,15 @@ export class ToDoPresentationComponent implements OnInit {
       this.todosLeftCount = lefttodo.length
   }
 
-  public setThemeImage(){
-    return this.darkMode ?  'assets/images/icon-sun.svg' : 'assets/images/icon-moon.svg'
+  public setThemeImage() {
+    return this.darkMode ? 'assets/images/icon-sun.svg' : 'assets/images/icon-moon.svg'
+  }
+
+  public drop(event: CdkDragDrop<string[]>) {
+    if (this.current === 1) {
+      moveItemInArray(this.copyData, event.previousIndex, event.currentIndex);
+      let data = JSON.stringify(this.copyData);
+      localStorage.setItem('todos', data)
+    }
   }
 }

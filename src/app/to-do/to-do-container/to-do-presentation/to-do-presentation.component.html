@@ -8,7 +8,7 @@
     <div class="flex-grow-1"></div>
 
     <!-- Start: Todo Container  -->
-    <div class="todo-container position-absolute mx-auto">
+    <div class="todo-container position-absolute mx-auto py-4">
 
         <!-- Heading  -->
         <div class="d-flex justify-content-between mb-4">
@@ -32,11 +32,11 @@
 
         <!-- Todo List  -->
         <div class="rounded-2 overflow-hidden d-flex flex-column shadow-lg mb-3"
-            [ngClass]="darkMode ? 'todo-bg' : 'bg-white'">
+            [ngClass]="darkMode ? 'todo-bg' : 'bg-white'" cdkDropList (cdkDropListDropped)="drop($event)">
             <div class="p-3 p-md-4 d-flex align-items-center justify-content-between" *ngFor="let data of copyData"
                 [ngClass]="{'border-bottom-dtheme' : darkMode, 'border-bottom-ltheme' : !darkMode, 
                     'cursor-pointer' : current === 1, 'cursor-not-allowed' : current === 2 || 3}"
-                (mouseenter)="onEnter(data)" (mouseleave)="onOut()">
+                (mouseenter)="onEnter(data)" (mouseleave)="onOut()" cdkDrag>
                 <div class="d-flex align-items-center">
                     <div class="dot d-flex justify-content-center align-items-center rounded-circle me-4 border-theme"
                         (click)="onTodo(data)"
