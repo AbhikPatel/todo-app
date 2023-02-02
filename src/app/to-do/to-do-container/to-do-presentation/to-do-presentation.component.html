@@ -41,7 +41,7 @@
                     <div class="dot d-flex justify-content-center align-items-center rounded-circle me-4 border-theme"
                         (click)="onTodo(data)"
                         [ngClass]="{'bg-check' : data.status, 'border-dtheme' : darkMode, 'border-ltheme' : !darkMode}">
-                        <img src="../../../../assets/images/icon-check.svg" *ngIf="data.status" alt="check">
+                        <img src="assets/images/icon-check.svg" *ngIf="data.status" alt="check">
                     </div>
                     <div class="fs-5 text-truncate todo-text"
                         [ngClass]="{'text-decoration-line-through text-muted' : data.status === true, 'text-secondary' : darkMode, 'text-dark' : !darkMode}">
@@ -49,7 +49,7 @@
                 </div>
                 <figure class="m-0" (click)="onDel(data)"
                     [ngClass]="hoverEffect === data.name && current === 1 ? 'visible' : 'invisible'">
-                    <img src="../../../../assets/images/icon-cross.svg" alt="cross">
+                    <img src="assets/images/icon-cross.svg" alt="cross">
                 </figure>
             </div>
 

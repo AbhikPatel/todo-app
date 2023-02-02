@@ -155,6 +155,6 @@ export class ToDoPresentationComponent implements OnInit {
   }
 
   public setThemeImage(){
-    return this.darkMode ?  '../../../../assets/images/icon-sun.svg' : '../../../../assets/images/icon-moon.svg'
+    return this.darkMode ?  'assets/images/icon-sun.svg' : 'assets/images/icon-moon.svg'
   }
 }
