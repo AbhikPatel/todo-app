@@ -1,48 +1,61 @@
 // Global styles goes here
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: $font-family;
 }
 
-html,body{
+html,
+body {
     height: 100%;
     overflow: hidden;
 }
 
-h1{
+h1 {
     letter-spacing: 20px;
 }
 
-.todo-bg{
+.todo-bg {
     background-color: #25283b;
 }
 
-.bg-check{
-    background: linear-gradient( rgb(87, 221, 255),rgb(192, 88, 243));
+.bg-check {
+    background: linear-gradient(rgb(87, 221, 255), rgb(192, 88, 243));
 }
 
-.bg-theme{
+.bg-theme {
     background-color: #181823;
 }
 
-.bg-theme2{
+.bg-theme2 {
     background-color: #e7e7e7;
 }
 
-.border-dtheme{
-    border:1px solid #424242;
+.border-dtheme {
+    border: 1px solid #424242;
 }
 
-.border-bottom-dtheme{
-    border-bottom:1px solid #424242;
+.border-bottom-dtheme {
+    border-bottom: 1px solid #424242;
 }
 
-.border-ltheme{
-    border:1px solid #e7e7e7;
+.border-ltheme {
+    border: 1px solid #e7e7e7;
 }
 
-.border-bottom-ltheme{
-    border-bottom:1px solid #e7e7e7;
+.border-bottom-ltheme {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+input {
+    caret-color: $primary;
+}
+
+.cursor-not-allowed{
+    cursor: not-allowed;
+}
+
+.cursor-pointer{
+    cursor: pointer;
 }

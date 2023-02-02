@@ -37,10 +37,10 @@ export class ToDoContainerComponent implements OnInit {
   
   public emitClearComplete(data:boolean){
     this._service.todos = this._service.todos.filter((items) => items.status === false)
+    this._service.todosSubject.next(this._service.todos)
     this.storeInLocalStorage();
-    this.getTodos = this._service.todosSubject.asObservable();
   }
-
+  
   public storeInLocalStorage() {
     let todosArray = this._service.todos;
     let stringFormat = JSON.stringify(todosArray);

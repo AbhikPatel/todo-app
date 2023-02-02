@@ -1,11 +1,11 @@
 <!-- Start:Wrapper Section  -->
-<div class="h-100 d-flex flex-column position-relative">
+<div class="h-100 d-flex flex-column position-relative user-select-none overflow-auto" [ngClass]="darkMode ? 'bg-theme' : 'bg-theme2'">
 
     <!-- Backgroud Image  -->
     <div class="image-container shadow-lg" [ngClass]="darkMode ? 'image-dark' : 'image-light'"></div>
 
     <!-- Background Theme  -->
-    <div class="flex-grow-1" [ngClass]="darkMode ? 'bg-theme' : 'bg-theme2'"></div>
+    <div class="flex-grow-1"></div>
 
     <!-- Start: Todo Container  -->
     <div class="todo-container position-absolute mx-auto">
@@ -14,48 +14,56 @@
         <div class="d-flex justify-content-between mb-4">
             <h1 class="text-white"> TODO </h1>
             <figure role="button" (click)="onMode()">
-                <img src="../../../../assets/images/icon-sun.svg" alt="sun" *ngIf="darkMode">
-                <img src="../../../../assets/images/icon-moon.svg" alt="moon" *ngIf="!darkMode">
+                <img [src]="setThemeImage()" alt="sun">
             </figure>
         </div>
 
         <!-- Form  -->
-        <form class="rounded-3 p-3 d-flex align-items-center mb-3" [formGroup]="todoGroup" (ngSubmit)="onSubmit()"
-            [ngClass]="darkMode ? 'todo-bg' : 'bg-white'">
+        <form class="rounded-3 p-3 p-md-4 d-flex align-items-center mb-3 border-danger" [formGroup]="todoGroup"
+            (ngSubmit)="onSubmit()"
+            [ngClass]="{'todo-bg' : darkMode, 'bg-white' : !darkMode, 'border border-2' : getControls['name'].invalid && getControls['name'].dirty}">
+            <div class="dot d-flex justify-content-center align-items-center rounded-circle me-4"
+                [ngClass]="darkMode ? 'border-dtheme' : 'border-ltheme'"></div>
             <input type="text" class="border-0 bg-transparent w-100 fs-5" id="name" name="name" formControlName="name"
-                placeholder="Create a new todo......." [ngClass]="darkMode ? 'text-secondary' : 'text-dark'">
+                placeholder="Create a new todo......." [ngClass]="darkMode ? 'text-secondary' : 'text-dark'"
+                autocomplete="off">
             <button class="d-none" type="submit"></button>
         </form>
 
         <!-- Todo List  -->
-        <div class="rounded-2 overflow-hidden d-flex flex-column shadow-lg"
+        <div class="rounded-2 overflow-hidden d-flex flex-column shadow-lg mb-3"
             [ngClass]="darkMode ? 'todo-bg' : 'bg-white'">
-            <div class="p-4 d-flex align-items-center justify-content-between" role="button"
-                *ngFor="let data of copyData" (click)="onTodo(data)" [ngClass]="darkMode ? 'border-bottom-dtheme' : 'border-bottom-ltheme' ">
+            <div class="p-3 p-md-4 d-flex align-items-center justify-content-between" *ngFor="let data of copyData"
+                [ngClass]="{'border-bottom-dtheme' : darkMode, 'border-bottom-ltheme' : !darkMode, 
+                    'cursor-pointer' : current === 1, 'cursor-not-allowed' : current === 2 || 3}"
+                (mouseenter)="onEnter(data)" (mouseleave)="onOut()">
                 <div class="d-flex align-items-center">
                     <div class="dot d-flex justify-content-center align-items-center rounded-circle me-4 border-theme"
+                        (click)="onTodo(data)"
                         [ngClass]="{'bg-check' : data.status, 'border-dtheme' : darkMode, 'border-ltheme' : !darkMode}">
                         <img src="../../../../assets/images/icon-check.svg" *ngIf="data.status" alt="check">
                     </div>
-                    <div class="fs-5"
+                    <div class="fs-5 text-truncate todo-text"
                         [ngClass]="{'text-decoration-line-through text-muted' : data.status === true, 'text-secondary' : darkMode, 'text-dark' : !darkMode}">
                         {{data.name}} </div>
                 </div>
-                <figure class="m-0" (click)="onDel(data)">
+                <figure class="m-0" (click)="onDel(data)"
+                    [ngClass]="hoverEffect === data.name && current === 1 ? 'visible' : 'invisible'">
                     <img src="../../../../assets/images/icon-cross.svg" alt="cross">
                 </figure>
             </div>
 
             <!-- No todo Container -->
-            <div class="p-4 d-flex align-items-center justify-content-center" role="button"
-                *ngIf="copyData.length === 0">
-                <span [ngClass]="darkMode ? 'text-secondary' : 'text-dark'"> No todos added </span>
+            <div class="p-3 p-md-4 d-flex align-items-center justify-content-center" role="button"
+                *ngIf="copyData.length === 0" [ngClass]="darkMode ? 'border-bottom-dtheme' : 'border-bottom-ltheme'">
+                <span [ngClass]="darkMode ? 'text-secondary' : 'text-dark'"> No todos {{current === 3 ? 'Completed' :
+                    'added'}} </span>
             </div>
 
             <!-- Bottom Layer  -->
-            <div class="p-4 d-flex justify-content-between align-items-center">
-                <span class="text-muted"> {{todo?.length}} items left </span>
-                <div class="d-flex align-items-center">
+            <div class="p-3 p-md-4 d-flex justify-content-between align-items-center">
+                <span class="text-muted"> {{todosLeftCount}} items left </span>
+                <div class="todo-nav align-items-center">
                     <span role="button" class="text-nav" (click)="onShow(1)"
                         [ngClass]="{'text-primary' : current === 1, 'text-dtheme' : darkMode, 'text-wtheme' : !darkMode}">
                         All </span>
@@ -69,6 +77,21 @@
                 <span role="button" class="text-nav" [ngClass]="{'text-dtheme' : darkMode, 'text-wtheme' : !darkMode}"
                     (click)="onClear()"> Clear Completed</span>
             </div>
+
+        </div>
+
+        <!-- Todo Nav  -->
+        <div class="todo-mobile align-items-center w-100 justify-content-center p-3 rounded-2"
+            [ngClass]="darkMode ? 'todo-bg' : 'bg-white'">
+            <span role="button" class="text-nav" (click)="onShow(1)"
+                [ngClass]="{'text-primary' : current === 1, 'text-dtheme' : darkMode, 'text-wtheme' : !darkMode}">
+                All </span>
+            <span role="button" class="text-nav px-3" (click)="onShow(2)"
+                [ngClass]="{'text-primary' : current === 2, 'text-dtheme' : darkMode, 'text-wtheme' : !darkMode}">
+                Active </span>
+            <span role="button" class="text-nav" (click)="onShow(3)"
+                [ngClass]="{'text-primary' : current === 3, 'text-dtheme' : darkMode, 'text-wtheme' : !darkMode}">
+                Completed </span>
         </div>
     </div>
     <!-- End: Todo Container  -->

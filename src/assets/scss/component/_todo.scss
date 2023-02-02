@@ -3,9 +3,33 @@
     right: 0;
     top: 80px;
     width: 800px;
+
+    @media(max-width: 992px){
+        width: 90%;
+    }
 }
 
 .dot{
     width: 30px;
     height: 30px;
+}
+
+.todo-nav{
+    display: flex;
+    @media(max-width:768px){
+        display: none;
+    }
+}
+
+.todo-mobile{
+    display: none;
+    @media(max-width:768px){
+        display: flex;
+    }
+}
+
+.todo-text{
+    @media(max-width:768px){
+        width: 200px;
+    }
 }

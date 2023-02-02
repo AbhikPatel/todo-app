@@ -28,10 +28,12 @@ export class ToDoPresentationComponent implements OnInit {
 
   public inputText: any;
   public current: number;
+  public todosLeftCount: number;
+  public hoverEffect: any;
   public todoGroup: FormGroup;
-  public deleteMode:boolean;
-  public darkMode:any;
-  public copyData:any;
+  public deleteMode: boolean;
+  public darkMode: any;
+  public copyData: any;
 
   constructor(
     private _service: ToDoPresenterService
@@ -44,6 +46,8 @@ export class ToDoPresentationComponent implements OnInit {
     this.deleteMode = false;
     this.copyData = [];
     this.current = 1;
+    this.hoverEffect = null;
+    this.todosLeftCount = 0;
   }
 
   ngOnInit(): void {
@@ -55,12 +59,14 @@ export class ToDoPresentationComponent implements OnInit {
    * @description This method is called in ngOnInit
   */
   public props() {
-    let theme:any = localStorage.getItem('theme')
+    let theme: any = localStorage.getItem('theme')
     this.darkMode = JSON.parse(theme)
 
     this.copyData = this.todo;
     this._service.todosData$.subscribe((data) => this.emitTodoData.emit(data))
     this._service.updatedTodo$.subscribe((data) => this.emitUpdateTodo.emit(data))
+
+    this.remaining();
   }
 
   /**
@@ -68,11 +74,13 @@ export class ToDoPresentationComponent implements OnInit {
    * @description This method is called when the form data is submitted
    */
   public onSubmit() {
-    if(this.todoGroup.valid){
+    if (this.todoGroup.valid) {
       let data = this._todo?.find((items) => items.name === this.todoGroup.value.name)
       data ? alert('This todo is already added') : this._service.getData(this.todoGroup.value)
       this.todoGroup.reset();
     }
+    this.current = 1;
+    this.remaining();
   }
 
   /**
@@ -80,46 +88,73 @@ export class ToDoPresentationComponent implements OnInit {
    * @param todo 
    * @description This method will make todo complete
    */
-  public onTodo(todo:todoModel){
-    todo.status = true;
-    this._service.getUpdateData(todo)
+  public onTodo(todo: todoModel) {
+    if (this.current === 1) {
+      todo.status ? todo.status = false : todo.status = true;
+      this._service.getUpdateData(todo)
+    }
+    this.remaining();
   }
-  
+
   /**
    * @name onDel
    * @param todo
    * @description To delete a todo 
    */
-  public onDel(todo:todoModel){
+  public onDel(todo: todoModel) {
     this._service.getData(todo)
+    this.current = 1;
+    this.remaining();
   }
 
-  public onShow(id:number){
-    if(id === 2){
+  public onShow(id: number) {
+    if (id === 2) {
       this.copyData = this.todo?.filter((items) => items.status === false);
       this.current = 2;
     }
 
-    if(id === 3){
+    if (id === 3) {
       this.copyData = this.todo?.filter((items) => items.status === true);
       this.current = 3;
     }
 
-    if(id === 1){
+    if (id === 1) {
       this.copyData = this.todo;
       this.current = 1;
     }
   }
 
-  public onClear(){
+  public onClear() {
     this.emitClearComplete.emit(true);
     this.current = 1;
+    this.copyData = this.todo?.filter((items) => items.status === false)
   }
 
-  public onMode(){
+  public onMode() {
     this.darkMode ? this.darkMode = false : this.darkMode = true;
     let data = JSON.stringify(this.darkMode)
     localStorage.setItem('theme', data)
   }
 
+  public get getControls() {
+    return this.todoGroup['controls']
+  }
+
+  public onEnter(data: todoModel) {
+    this.hoverEffect = data.name;
+  }
+
+  public onOut() {
+    this.hoverEffect = null;
+  }
+
+  public remaining() {
+    let lefttodo = this.todo?.filter((items) => items.status === false);
+    if (lefttodo)
+      this.todosLeftCount = lefttodo.length
+  }
+
+  public setThemeImage(){
+    return this.darkMode ?  '../../../../assets/images/icon-sun.svg' : '../../../../assets/images/icon-moon.svg'
+  }
 }

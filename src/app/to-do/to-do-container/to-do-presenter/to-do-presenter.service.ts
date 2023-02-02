@@ -32,7 +32,7 @@ export class ToDoPresenterService {
    */
   public getGroup(){
     return this._fb.group({
-      name:['',[Validators.required, Validators.pattern(`[a-z][A-Z][0-9]`)]],
+      name:['',[Validators.required,Validators.maxLength(25)]],
       status:[''],
     })
   }
