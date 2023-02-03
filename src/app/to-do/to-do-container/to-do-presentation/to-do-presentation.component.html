@@ -33,9 +33,8 @@
         <!-- Todo List  -->
         <div class="rounded-2 overflow-hidden d-flex flex-column shadow-lg mb-3"
             [ngClass]="darkMode ? 'todo-bg' : 'bg-white'" cdkDropList (cdkDropListDropped)="drop($event)">
-            <div class="p-3 p-md-4 d-flex align-items-center justify-content-between" *ngFor="let data of copyData"
-                [ngClass]="{'border-bottom-dtheme' : darkMode, 'border-bottom-ltheme' : !darkMode, 
-                    'cursor-pointer' : current === 1, 'cursor-not-allowed' : current === 2 || 3}"
+            <div class="p-3 p-md-4 d-flex align-items-center justify-content-between cursor-pointer" *ngFor="let data of copyData"
+                [ngClass]="darkMode ? 'border-bottom-dtheme' : 'border-bottom-ltheme'"
                 (mouseenter)="onEnter(data)" (mouseleave)="onOut()" cdkDrag>
                 <div class="d-flex align-items-center">
                     <div class="dot d-flex justify-content-center align-items-center rounded-circle me-4 border-theme"

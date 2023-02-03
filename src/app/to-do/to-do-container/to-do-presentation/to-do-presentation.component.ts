@@ -80,8 +80,8 @@ export class ToDoPresentationComponent implements OnInit {
       data ? alert('This todo is already added') : this._service.getData(this.todoGroup.value)
       this.todoGroup.reset();
     }
-    this.current = 1;
     this.remaining();
+    this.onShow(1)
   }
 
   /**
@@ -90,10 +90,9 @@ export class ToDoPresentationComponent implements OnInit {
    * @description This method will make todo complete
    */
   public onTodo(todo: todoModel) {
-    if (this.current === 1) {
-      todo.status ? todo.status = false : todo.status = true;
-      this._service.getUpdateData(todo)
-    }
+    todo.status ? todo.status = false : todo.status = true;
+    this._service.getUpdateData(todo)
+    this.onShow(this.current)
     this.remaining();
   }
 
